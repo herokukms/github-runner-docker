@@ -45,7 +45,9 @@ rm -f libicu72_72.1-3_amd64.deb
 
 mkdir /_work
 
-chown -R runner /_work /actions-runner /opt/hostedtoolcache
+apt update
+chown -R runner /_work /actions-runner /opt/hostedtoolcache /actions-runner
+apt install --no-install-recommends -y dumb-init jq
 
 cd /
 curl -L https://raw.githubusercontent.com/myoung34/docker-github-actions-runner/master/token.sh > /token.sh

@@ -1,4 +1,24 @@
-# ubuntu-nested-qemu-docker
+# github-runner-docker
+
+Heavily (90%) based on [ubuntu-nested-qemu-docker](https://github.com/eltorio/ubuntu-nested-qemu-docker).  
+
+## What differs ?
+
+[Github action runner](https://github.com/actions/runner) is embedded in the container.  
+Providing `/ext/entrypoint` can automate the start of the runner.  
+The runner lives at /actions-runner .  
+Launch the container interactively with `make _run` and log into the nested Ubuntu as root or runner without password, cd to /actions-runner and play !
+
+## Automation
+
+[myoung34](https://github.com/myoung34/docker-github-actions-runner/tree/master) entrypoint is embedded so you can use it like:
+
+```sh
+export REPO_URL='https://github.com/herokukms/github-runner-docker'
+export ACCESS_TOKEN='ghp_DA2KUNAo01OI3vtF59P5ZdzGLmQ63u3XG7KS'
+cd /actions-runner
+/entrypoint.sh ./bin/Runner.Listener run --startuptype service
+```
 
 ## Why this strange  idea ?
 

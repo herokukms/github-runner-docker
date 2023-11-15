@@ -46,7 +46,23 @@ launch-simply:
 		-e QEMU_BOOT='order=c,menu=on' \
 		-e QEMU_PORTS='2375 2376' \
 		tianon/qemu  start-qemu -virtfs local,path=/ext,mount_tag=host0,security_model=passthrough,id=host0 -serial telnet:127.0.0.1:23,server,nowait
-		
+
+launch-test-compressed: 
+	touch ./sources/hda.qcow2
+	docker run -it --rm \
+		--name qemu-container-tianon \
+		-p 5900:5900 \
+		-p 23:23 \
+		-v ./sources/hda-compressed.qcow2:/tmp/hda.qcow2 \
+		-e QEMU_HDA=/tmp/hda.qcow2 \
+		-e QEMU_HDA_SIZE=8G \
+		-e QEMU_CPU=4 \
+		-e QEMU_RAM=3000 \
+		-v ./install.sh:/ext/entrypoint:ro \
+		-e QEMU_BOOT='order=c,menu=on' \
+		-e QEMU_PORTS='2375 2376' \
+		tianon/qemu  start-qemu -virtfs local,path=/ext,mount_tag=host0,security_model=passthrough,id=host0 -serial telnet:127.0.0.1:23,server,nowait
+
 demo:
 	docker run -it -v ./demo-entrypoint:/ext/entrypoint:ro herokukms/github-runner-docker:1.0.0
 
@@ -56,8 +72,9 @@ build: join
 test: build
 	docker run -it -v ./demo-entrypoint:/ext/entrypoint:ro herokukms/github-runner-docker:1.0.0 /bin/bash
 
-run: build 
-	ocker run -it \
+run: build _run
+_run: 
+	docker run -it \
 		-p 5900:5900 \
 		-p 23:23 \
 		-p 8080:80 \
