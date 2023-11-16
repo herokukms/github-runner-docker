@@ -22,7 +22,7 @@ launch-tianon-it: join
 		-e QEMU_CPU=4 \
 		-e QEMU_RAM=3000 \
 		-v ./sources/ubuntu.iso:/tmp/ubuntu.iso:ro \
-		-v ./sources/ext/entrypoint:/ext/entrypoint \
+		-v ./sources/ext/entrypoint:/ext/entrypoint/entrypoint \
 		-e QEMU_BOOT='order=c,menu=on' \
 		-e QEMU_PORTS='2375 2376' \
 		--entrypoint "" \
@@ -42,7 +42,7 @@ launch-simply:
 		-e QEMU_HDA_SIZE=8G \
 		-e QEMU_CPU=4 \
 		-e QEMU_RAM=3000 \
-		-v ./install.sh:/ext/entrypoint:ro \
+		-v ./install.sh:/ext/entrypoint/entrypoint:ro \
 		-e QEMU_BOOT='order=c,menu=on' \
 		-e QEMU_PORTS='2375 2376' \
 		tianon/qemu  start-qemu -virtfs local,path=/ext,mount_tag=host0,security_model=passthrough,id=host0 -serial telnet:127.0.0.1:23,server,nowait
@@ -58,19 +58,19 @@ launch-test-compressed:
 		-e QEMU_HDA_SIZE=8G \
 		-e QEMU_CPU=4 \
 		-e QEMU_RAM=3000 \
-		-v ./install.sh:/ext/entrypoint:ro \
+		-v ./install.sh:/ext/entrypoint/entrypoint:ro \
 		-e QEMU_BOOT='order=c,menu=on' \
 		-e QEMU_PORTS='2375 2376' \
 		tianon/qemu  start-qemu -virtfs local,path=/ext,mount_tag=host0,security_model=passthrough,id=host0 -serial telnet:127.0.0.1:23,server,nowait
 
 demo:
-	docker run -it -v ./demo-entrypoint:/ext/entrypoint:ro herokukms/github-runner-docker:1.1.0
+	docker run -it -v ./demo-entrypoint:/ext/entrypoint/entrypoint:ro herokukms/github-runner-docker:1.1.0
 
 build: join
 	docker build -t herokukms/github-runner-docker:1.1.0 .
 
 test: build
-	docker run -it -v ./demo-entrypoint:/ext/entrypoint:ro herokukms/github-runner-docker:1.1.0 /bin/bash
+	docker run -it -v ./demo-entrypoint:/ext/entrypoint/entrypoint:ro herokukms/github-runner-docker:1.1.0 /bin/bash
 
 run: build _run
 _run: 
@@ -78,6 +78,6 @@ _run:
 		-p 5900:5900 \
 		-p 23:23 \
 		-p 8080:80 \
-		-v ./demo-entrypoint:/ext/entrypoint:ro herokukms/github-runner-docker:1.1.0 
+		-v ./demo-entrypoint:/ext/entrypoint/entrypoint:ro herokukms/github-runner-docker:1.1.0 
 		# \
 		# start-qemu -virtfs local,path=/ext,mount_tag=host0,security_model=passthrough,id=host0 -serial telnet:127.0.0.1:23,server,nowait
