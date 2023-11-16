@@ -64,13 +64,13 @@ launch-test-compressed:
 		tianon/qemu  start-qemu -virtfs local,path=/ext,mount_tag=host0,security_model=passthrough,id=host0 -serial telnet:127.0.0.1:23,server,nowait
 
 demo:
-	docker run -it -v ./demo-entrypoint:/ext/entrypoint:ro herokukms/github-runner-docker:1.0.0
+	docker run -it -v ./demo-entrypoint:/ext/entrypoint:ro herokukms/github-runner-docker:1.1.0
 
 build: join
-	docker build -t herokukms/github-runner-docker:1.0.0 .
+	docker build -t herokukms/github-runner-docker:1.1.0 .
 
 test: build
-	docker run -it -v ./demo-entrypoint:/ext/entrypoint:ro herokukms/github-runner-docker:1.0.0 /bin/bash
+	docker run -it -v ./demo-entrypoint:/ext/entrypoint:ro herokukms/github-runner-docker:1.1.0 /bin/bash
 
 run: build _run
 _run: 
@@ -78,5 +78,6 @@ _run:
 		-p 5900:5900 \
 		-p 23:23 \
 		-p 8080:80 \
-		-v ./demo-entrypoint:/ext/entrypoint:ro herokukms/github-runner-docker:1.0.0 \
-		start-qemu -virtfs local,path=/ext,mount_tag=host0,security_model=passthrough,id=host0 -serial telnet:127.0.0.1:23,server,nowait
+		-v ./demo-entrypoint:/ext/entrypoint:ro herokukms/github-runner-docker:1.1.0 
+		# \
+		# start-qemu -virtfs local,path=/ext,mount_tag=host0,security_model=passthrough,id=host0 -serial telnet:127.0.0.1:23,server,nowait

@@ -23,7 +23,7 @@ cd /actions-runner
 ## Why this strange  idea ?
 
 Because most of docker container can't run in a privileged environment and so cannot run Docker.  
-This Docker image runs an Alpine linux in a QEMU virtual machine so the docker daemon runs like in a real machine.
+This Docker image runs an Ubuntu linux in a QEMU virtual machine so the docker daemon runs like in a real machine.
 
 ## How to mod
 
@@ -57,7 +57,7 @@ halt
 
 ## Connect to nested Ubuntu
 
-While connected to the qemu container you can reach the nested Alpine vm with
+While connected to the qemu container you can reach the nested Ubuntu vm with
 
 ```sh
 telnet localhost
